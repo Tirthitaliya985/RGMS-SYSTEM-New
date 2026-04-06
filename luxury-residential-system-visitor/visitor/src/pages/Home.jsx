@@ -12,7 +12,7 @@ export const Home = () => {
   return (
     <>
     
-     <Hero/>
+    <Hero/>
     <Features/>
     <VisitorManagement/>
     <SocietyGuardFeatures/>
