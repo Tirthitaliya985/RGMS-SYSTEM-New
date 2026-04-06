@@ -12,8 +12,8 @@ export const Home = () => {
   return (
     <>
     
-    {/* <Hero/> */}
-    {/* <Features/> */}
+     <Hero/>
+    <Features/>
     <VisitorManagement/>
     <SocietyGuardFeatures/>
     <Testimonials/>
