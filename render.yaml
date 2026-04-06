@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: rgms-backend
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /api/dashboard
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: PORT
+        value: 5000

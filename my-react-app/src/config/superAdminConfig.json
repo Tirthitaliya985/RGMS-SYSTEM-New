@@ -1,0 +1,55 @@
+{
+  "menu": [
+    {
+      "path": "/admin/dashboard",
+      "name": "Dashboard",
+      "icon": "DashboardOutlined",
+      "protected": true
+    },
+    {
+      "path": "/admin/societies",
+      "name": "Societies",
+      "icon": "HomeOutlined",
+      "protected": true
+    },
+    {
+      "path": "/admin/admin-accounts",
+      "name": "Admin Accounts",
+      "icon": "TeamOutlined",
+      "protected": true
+    },
+    {
+      "path": "/admin/system-activities",
+      "name": "System Activities",
+      "icon": "BellOutlined",
+      "protected": true
+    },
+    {
+      "path": "/admin/roles",
+      "name": "Roles & Permissions",
+      "icon": "SettingOutlined",
+      "protected": true
+    }
+  ],
+
+  "dashboard": {
+    "stats": [
+      { "title": "Total Societies", "value": 12, "icon": "HomeOutlined" },
+      { "title": "Admins", "value": 5, "icon": "TeamOutlined" },
+      { "title": "Active Users", "value": 320, "icon": "UserOutlined" },
+      { "title": "Pending Requests", "value": 8, "icon": "AlertOutlined" }
+    ],
+    "charts": {
+      "systemActivities": [
+        { "day": "Mon", "count": 5 },
+        { "day": "Tue", "count": 10 },
+        { "day": "Wed", "count": 7 }
+      ],
+      "userGrowth": [
+        { "month": "Jan", "count": 50 },
+        { "month": "Feb", "count": 80 },
+        { "month": "Mar", "count": 120 }
+      ]
+    }
+  }
+}

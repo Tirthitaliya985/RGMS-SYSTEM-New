@@ -1,0 +1,10 @@
+const [hoteldata,sethoteldata] = useState([
+    name : "",
+    add : "",
+    city : "",
+    state : "",
+    zip : "",
+    phone : "",
+    email : "",
+    
+])

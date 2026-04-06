@@ -1,0 +1,6 @@
+/* LeafletMap.css */
+.leaflet-container {
+  width: 100% !important;
+  height: 350px !important; /* or whatever fits your card */
+  border-radius: 8px;
+}

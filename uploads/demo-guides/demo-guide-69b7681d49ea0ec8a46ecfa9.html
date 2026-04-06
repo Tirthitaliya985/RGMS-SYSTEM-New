@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Society Management Project - Demo Guide</title>
+    <style>
+      :root {
+        --ink: #0f172a;
+        --muted: #475569;
+        --brand: #0b5ed7;
+        --bg-soft: #f8fafc;
+        --line: #dbe5f1;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--ink);
+        background: #fff;
+      }
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        padding: 14mm 14mm 12mm;
+      }
+      .header {
+        border: 1px solid var(--line);
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #eef4ff, #ffffff 65%);
+      }
+      h1 {
+        font-size: 24px;
+        margin: 0 0 6px;
+        color: var(--brand);
+      }
+      .sub {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        background: #fff;
+      }
+      h2 {
+        font-size: 14px;
+        margin: 0 0 8px;
+        color: #0b376d;
+      }
+      ul {
+        margin: 0;
+        padding-left: 16px;
+        font-size: 11px;
+        line-height: 1.45;
+      }
+      li { margin-bottom: 4px; }
+      .cred {
+        display: grid;
+        grid-template-columns: 115px 1fr;
+        gap: 6px 8px;
+        font-size: 11px;
+      }
+      .k { color: var(--muted); }
+      .v { font-weight: 600; }
+      .flow {
+        margin-top: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        background: var(--bg-soft);
+      }
+      .flow p {
+        margin: 0;
+        font-size: 11px;
+        line-height: 1.5;
+      }
+      .shots {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .shot {
+        border: 1px dashed #9fb5d1;
+        border-radius: 8px;
+        height: 92px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 8px;
+        color: #5b6f89;
+        font-size: 10px;
+      }
+      .footer {
+        margin-top: 10px;
+        border-top: 1px solid var(--line);
+        padding-top: 8px;
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .mono {
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="header">
+        <h1>Society Management Project - Demo Guide</h1>
+        <p class="sub">
+          One-page demo summary for client/interviewer sharing
+        </p>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Project Summary</h2>
+          <ul>
+            <li>Role-based platform for Admin, Society Admin, Wing Admin, Guard, and Resident.</li>
+            <li>Core modules: Visitor management, complaints, billing, notices, events, attendance, and reports.</li>
+            <li>Secure login with JWT-based authorization and protected routes.</li>
+            <li>WhatsApp and email notification integrations for operational workflows.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Demo Access</h2>
+          <div class="cred">
+            <div class="k">Live URL</div><div class="v">-</div>
+            <div class="k">Demo Society</div><div class="v">demo_visitors_society</div>
+            <div class="k">Demo Resident</div><div class="v">tirthitaliya.6ecfa9@gmail.com / 123456</div>
+            <div class="k">Admin</div><div class="v">[email/username] / [password]</div>
+            <div class="k">Society Admin</div><div class="v">[email] / [password]</div>
+            <div class="k">Guard</div><div class="v">[email] / [password]</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Key Demo Flows</h2>
+          <ul>
+            <li>Resident raises visitor request -> Guard verifies entry/exit with QR.</li>
+            <li>Resident submits complaint -> Society/Admin tracks and updates status.</li>
+            <li>Admin views reports, audits, and role configuration.</li>
+            <li>Demo visitor form submission triggers WhatsApp and email alerts.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Tech Stack</h2>
+          <ul>
+            <li>Frontend: React + Vite + Ant Design</li>
+            <li>Backend: Node.js + Express</li>
+            <li>Database: MongoDB + Mongoose</li>
+            <li>Realtime: Socket.IO</li>
+            <li>Integrations: WhatsApp Cloud/Web, Nodemailer</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="flow">
+        <h2 style="margin-top:0">Suggested Live Demo Sequence (5-7 minutes)</h2>
+        <p>
+          1) Login as Admin -> show dashboard and reports.<br />
+          2) Open Demo Visitors page -> show new demo request entries and status updates.<br />
+          3) Login as Resident -> create visitor request and complaint.<br />
+          4) Login as Guard -> approve gate flow, mark arrival/exit, QR verification.<br />
+          5) Return to Admin/Society role -> show resolved workflow and activity visibility.
+        </p>
+      </section>
+
+      <section class="shots">
+        <div class="shot">Add Screenshot: Admin Dashboard</div>
+        <div class="shot">Add Screenshot: Demo Visitors Page</div>
+        <div class="shot">Add Screenshot: Guard Panel</div>
+        <div class="shot">Add Screenshot: Resident Visitors</div>
+        <div class="shot">Add Screenshot: Complaints Module</div>
+        <div class="shot">Add Screenshot: Reports / Audit Logs</div>
+      </section>
+
+      <section class="footer">
+        Prepared by: <strong> Tirth Italiya </strong> |
+        Contact: <span class="mono">8347059901</span> |
+        Date: <span class="mono">2026-03-06</span>
+      </section>
+    </main>
+  </body>
+</html>

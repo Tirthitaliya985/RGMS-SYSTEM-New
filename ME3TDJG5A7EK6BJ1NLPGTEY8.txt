@@ -1,0 +1,174 @@
+ME3TDJG5A7EK6BJ1NLPGTEY8
+
+email app pass = thit urfm szir xszl
+
+{
+  "Registered Name": "Razorpay Payments Private Limited",
+  "CIN": "U62099KA2024PTC188982",
+  "PAN": "AANCR6717K",
+  "TAN": "BLRR30567F",
+  "GST": "29AANCR6717K1ZN"
+}
+
+
+pay id = rzp_test_SJdpdTmA4H6VqM
+
+pay key = HICnKVhU51HKzyDZavKx1h73
+
+
+🏢 1️⃣ Resident Management (Very Important)
+Add:
+
+✅ View all residents in that wing
+
+✅ Add new resident
+
+✅ Edit resident
+
+✅ Delete resident
+
+✅ Upload resident documents
+
+✅ Export resident list (Excel)
+
+Extra Pro Feature:
+
+🔍 Search by flat number
+
+📊 Occupied vs Vacant flats card
+
+📞 Emergency contact info
+
+💰 2️⃣ Advanced Maintenance Section
+
+You already have basic maintenance. Add:
+
+✅ Month filter
+
+✅ Paid vs Unpaid summary
+
+✅ Late fee auto calculation
+
+✅ Manual mark as paid
+
+✅ Download month report
+
+✅ Payment history per resident
+
+✅ View payment receipt
+
+🔥 Pro Feature:
+
+📈 Monthly collection chart
+
+💳 Razorpay payment status tracking
+
+⏰ Auto reminder button
+
+🛠 3️⃣ Complaint Management (Very Powerful Feature)
+
+Wing Admin should handle:
+
+✅ Residents raise complaints
+
+✅ Assign status (Pending / In Progress / Resolved)
+
+✅ Add remarks
+
+✅ Attach images
+
+🔥 Add:
+
+📊 Complaint stats (Open / Closed)
+
+📅 Complaint history filter
+
+This makes your system look real.
+
+👮 4️⃣ Staff / Security Management
+
+Add:
+
+✅ View wing security
+
+✅ Attendance tracking
+
+✅ Salary overview (if needed)
+
+Optional:
+
+🕒 Guard shift tracking
+
+📦 5️⃣ Visitor Management (Very Professional Feature)
+
+✅ View incoming visitors
+
+✅ Approve / Reject visitor
+
+✅ Visitor history
+
+✅ Emergency alerts
+
+🔥 This makes your project stand out.
+
+📢 6️⃣ Notice Board (Important)
+
+✅ Create notice
+
+✅ Visible only to wing residents
+
+✅ Attach PDF/image
+
+✅ Schedule notice
+
+📊 7️⃣ Wing Analytics Page
+
+Create a separate page:
+
+Total flats
+
+Occupied flats
+
+Total residents
+
+Monthly collection %
+
+Pending amount
+
+Complaint stats
+
+Make it chart-based (Recharts).
+
+📁 8️⃣ Document Management
+
+Upload wing documents
+
+Insurance
+
+Audit reports
+
+Maintenance contracts
+
+🔐 9️⃣ Role Control
+
+Make sure Wing Admin:
+
+❌ Cannot see other wings
+
+❌ Cannot edit society settings
+
+✅ Only manage his wing
+
+🧠 10️⃣ Smart Features (Advanced Level)
+
+If you want enterprise look:
+
+Auto maintenance generation for wing only
+
+Auto WhatsApp reminder (email already you have)
+
+Late fee auto after due date
+
+Payment receipt PDF generation
+
+Export full wing report

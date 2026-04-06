@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import 'antd/dist/reset.css';
+
+.highlight-row {
+  background-color: rgba(24, 144, 255, 0.2) !important;
+  transition: background-color 2s ease;
+}
+
+.pulse-card {
+  animation: pulse 0.6s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+  50% { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+}
+
+.ant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}

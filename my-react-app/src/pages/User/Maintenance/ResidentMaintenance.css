@@ -1,0 +1,16 @@
+.paid-row {
+  background-color: #f6ffed;
+}
+.overdue-row {
+  background-color: #fff2f0;
+}
+.upcoming-row {
+  background-color: #fffbe6;
+}
+.ant-table-tbody > tr:hover {
+  background-color: #e6f7ff !important;
+}
+.total-amount {
+  font-size: 18px;
+  font-weight: bold;
+}
