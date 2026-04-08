@@ -301,7 +301,7 @@ export default function SocietyAdminDashboard() {
         </Card>
 
         <Spin spinning={loading}>
-          <div style={{ width: "100%", overflowX: "hidden" }}>
+          <div style={{  width: "100%", overflowX: "hidden" }}>
           <Row gutter={sectionGutter}>
             <Col xs={24} sm={12} lg={6} style={colStyle}>
               <Card style={statCardStyle} styles={{ body: cardBodyStyle }}>
@@ -311,7 +311,7 @@ export default function SocietyAdminDashboard() {
                   prefix={<TeamOutlined />}
                 />
                 <Text type="secondary">
-                  Registered units currently active in your society
+                  Registered units currently active in society
                 </Text>
               </Card>
             </Col>
