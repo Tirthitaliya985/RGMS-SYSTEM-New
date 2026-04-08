@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Table, Button, Modal, Form, Input, Select, message, Tag, Typography, Tabs, Card, Space, Avatar, Divider, Popconfirm, Alert } from "antd";
 import { 
   PlusOutlined, 
@@ -24,14 +24,28 @@ const { Title, Text } = Typography;
 export default function Payments() {
   const [payments, setPayments] = useState([]);
   const [bills, setBills] = useState([]);
+  const [pendingMonthFilter, setPendingMonthFilter] = useState("");
+  const [pendingFlatFilter, setPendingFlatFilter] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [sendingMessageId, setSendingMessageId] = useState(null);
   const [form] = Form.useForm();
+  const hasAutoSelectedMonthRef = useRef(false);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  const pendingMonthOptions = Array.from(
+    new Set(bills.map((b) => String(b.month || "").trim()).filter(Boolean))
+  ).sort((a, b) => b.localeCompare(a));
+
+  useEffect(() => {
+    if (!pendingMonthFilter && pendingMonthOptions.length > 0 && !hasAutoSelectedMonthRef.current) {
+      setPendingMonthFilter(pendingMonthOptions[0]);
+      hasAutoSelectedMonthRef.current = true;
+    }
+  }, [pendingMonthOptions, pendingMonthFilter]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -54,6 +68,35 @@ export default function Payments() {
     const data = Array.isArray(res.data) ? res.data : [];
     setBills(data.filter(b => b.status !== "Paid"));
   };
+
+  const getFlatSortKey = (flat) => {
+    const cleaned = String(flat || "").trim();
+    const match = cleaned.match(/\d+/);
+    if (match) return Number(match[0]);
+    return cleaned.toLowerCase();
+  };
+
+  const filteredBills = bills.filter((b) => {
+    const month = String(b.month || "").toLowerCase();
+    const flatNo = String(b.flatNo || b.residentId?.flatNo || "").toLowerCase();
+    const filter = pendingMonthFilter.trim().toLowerCase();
+    const flatFilter = pendingFlatFilter.trim().toLowerCase();
+
+    const matchesMonth = !filter || month.includes(filter);
+    const matchesFlat = !flatFilter || flatNo.includes(flatFilter);
+
+    return matchesMonth && matchesFlat;
+  }).sort((a, b) => {
+    const aKey = getFlatSortKey(a.flatNo || a.residentId?.flatNo);
+    const bKey = getFlatSortKey(b.flatNo || b.residentId?.flatNo);
+
+    if (typeof aKey === "number" && typeof bKey === "number") {
+      return aKey - bKey;
+    }
+    if (typeof aKey === "number") return -1;
+    if (typeof bKey === "number") return 1;
+    return String(aKey).localeCompare(String(bKey));
+  });
 
   const handleSendReminder = async (bill) => {
     try {
@@ -233,8 +276,8 @@ export default function Payments() {
         </span>
       ),
       children: (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-4">
-          <div className="p-5 border-b border-gray-100 bg-slate-50 flex justify-between items-center">
+        <div className="payments-panel bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-4">
+          <div className="payments-section-header p-5 border-b border-gray-100 bg-slate-50 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-bold text-gray-800 m-0">Recent Transactions</h3>
               <p className="text-sm text-gray-500 m-0 mt-1">View all successful payments made by residents.</p>
@@ -267,15 +310,48 @@ export default function Payments() {
         </span>
       ),
       children: (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-4">
-          <div className="p-5 border-b border-gray-100 bg-red-50/50 flex justify-between items-center">
+        <div className="payments-panel bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-4">
+          <div className="payments-section-header p-5 border-b border-gray-100 bg-red-50/50 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-bold text-gray-800 m-0">Awaiting Payment</h3>
               <p className="text-sm text-gray-500 m-0 mt-1">Review pending dues and inform residents directly via WhatsApp.</p>
             </div>
           </div>
+          <div className="payments-filter-bar px-5 py-4 border-b border-gray-100 bg-white flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <Select
+                size="large"
+                placeholder="Select Billing Month (YYYY-MM)"
+                value={pendingMonthFilter || undefined}
+                onChange={(value) => setPendingMonthFilter(value || "")}
+                allowClear
+                className="rounded-xl w-full [&_.ant-select-selector]:rounded-xl"
+                dropdownStyle={{ borderRadius: '12px', padding: '8px' }}
+              >
+                {pendingMonthOptions.map((m) => (
+                  <Option key={m} value={m}>{m}</Option>
+                ))}
+              </Select>
+              <Input
+                size="large"
+                placeholder="Filter by Flat Number"
+                value={pendingFlatFilter}
+                onChange={(e) => setPendingFlatFilter(e.target.value)}
+                className="rounded-xl"
+              />
+            </div>
+            <Button
+              onClick={() => {
+                setPendingMonthFilter("");
+                setPendingFlatFilter("");
+              }}
+              className="payments-clear-btn rounded-xl border-gray-300 text-gray-600"
+            >
+              Clear
+            </Button>
+          </div>
           <Table
-            dataSource={bills}
+            dataSource={filteredBills}
             columns={pendingBillsColumns}
             rowKey="_id"
             loading={loading}
@@ -290,10 +366,10 @@ export default function Payments() {
 
   return (
     <SocietyLayout>
-      <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="payments-page p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 gap-4">
+        <div className="payments-hero-card flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 gap-4">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl shadow-inner hidden sm:flex items-center justify-center h-12 w-12">
               <CreditCardOutlined className="text-2xl" />
@@ -484,6 +560,71 @@ export default function Payments() {
             background: linear-gradient(to right, #4f46e5, #9333ea);
             height: 3px;
             border-radius: 3px 3px 0 0;
+          }
+
+          body[data-theme="dark"] .payments-page .payments-hero-card,
+          body[data-theme="dark"] .payments-page .payments-panel {
+            background: var(--ui-surface-strong) !important;
+            border-color: var(--ui-border) !important;
+            box-shadow: var(--ui-shadow-1);
+          }
+
+          body[data-theme="dark"] .payments-page .payments-section-header,
+          body[data-theme="dark"] .payments-page .payments-filter-bar {
+            background: color-mix(in srgb, var(--ui-surface-strong) 88%, #0b1220) !important;
+            border-color: var(--ui-border) !important;
+          }
+
+          body[data-theme="dark"] .payments-page .text-gray-800 {
+            color: #e2e8f0 !important;
+          }
+          body[data-theme="dark"] .payments-page .text-gray-700 {
+            color: #cbd5e1 !important;
+          }
+          body[data-theme="dark"] .payments-page .text-gray-600 {
+            color: #cbd5e1 !important;
+          }
+          body[data-theme="dark"] .payments-page .text-gray-500 {
+            color: #94a3b8 !important;
+          }
+
+          body[data-theme="dark"] .payments-page .custom-payments-table .ant-table-thead > tr > th {
+            color: #94a3b8 !important;
+            border-bottom-color: rgba(148, 163, 184, 0.22) !important;
+          }
+          body[data-theme="dark"] .payments-page .custom-payments-table .ant-table-tbody > tr > td {
+            background: transparent !important;
+            color: #e2e8f0 !important;
+            border-bottom-color: rgba(148, 163, 184, 0.18) !important;
+          }
+          body[data-theme="dark"] .payments-page .custom-payments-table .ant-table-tbody > tr:hover > td {
+            background-color: #22375c !important;
+          }
+
+          body[data-theme="dark"] .payments-page .ant-input,
+          body[data-theme="dark"] .payments-page .ant-select-selector {
+            background: #0b1220 !important;
+            border-color: var(--ui-border) !important;
+            color: #e2e8f0 !important;
+          }
+
+          body[data-theme="dark"] .payments-page .payments-clear-btn {
+            background: #0b1220 !important;
+            border-color: #334155 !important;
+            color: #e2e8f0 !important;
+          }
+
+          body[data-theme="dark"] .payments-page .bg-green-50 {
+            background-color: rgba(16, 185, 129, 0.15) !important;
+          }
+          body[data-theme="dark"] .payments-page .bg-red-50 {
+            background-color: rgba(248, 113, 113, 0.15) !important;
+          }
+          body[data-theme="dark"] .payments-page .bg-indigo-50 {
+            background-color: rgba(129, 140, 248, 0.16) !important;
+          }
+          body[data-theme="dark"] .payments-page .bg-slate-50 {
+            background-color: rgba(148, 163, 184, 0.12) !important;
           }
         `}</style>
       </div>

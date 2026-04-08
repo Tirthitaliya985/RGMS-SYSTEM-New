@@ -4,8 +4,11 @@ import { BellOutlined } from "@ant-design/icons";
 import api from "../api/api";
 import { NotificationContext } from "@/context/NotificationContext";
 import SocietyLayout from "./Layout/SocietyLayout";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Notifications() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const {
     notifications,
     setNotifications,
@@ -50,7 +53,7 @@ export default function Notifications() {
 
   return (
     <SocietyLayout>
-    <div>
+    <div className="notifications-page">
       <Space style={{ marginBottom: 16 }}>
         <Input.Search
           placeholder="Search notifications..."
@@ -62,10 +65,22 @@ export default function Notifications() {
 
       <List
         bordered
+        style={{
+          background: isDark ? "#0f172a" : "#ffffff",
+          borderColor: isDark ? "rgba(148, 163, 184, 0.22)" : undefined,
+        }}
         dataSource={notifications}
         renderItem={(item) => (
           <List.Item
-            style={{ background: item.isRead ? "#fff" : "#f0f8ff" }}
+            style={{
+              background: isDark
+                ? item.isRead
+                  ? "#0f172a"
+                  : "#13233e"
+                : item.isRead
+                  ? "#ffffff"
+                  : "#f0f8ff",
+            }}
             actions={[
               !item.isRead && (
                 <Button size="small" onClick={() => markRead(item._id)}>
@@ -78,10 +93,20 @@ export default function Notifications() {
             ]}
           >
             <List.Item.Meta
-              title={<b>{item.title}</b>}
-              description={item.message}
+              title={
+                <span style={{ color: isDark ? "#e2e8f0" : "#111827", fontWeight: 600 }}>
+                  {item.title}
+                </span>
+              }
+              description={
+                <span style={{ color: isDark ? "#94a3b8" : "#475569" }}>
+                  {item.message}
+                </span>
+              }
             />
-            <small>{new Date(item.createdAt).toLocaleString()}</small>
+            <small style={{ color: isDark ? "#94a3b8" : "#64748b" }}>
+              {new Date(item.createdAt).toLocaleString()}
+            </small>
           </List.Item>
         )}
       />
