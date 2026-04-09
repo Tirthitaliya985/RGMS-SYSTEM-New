@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import ResidentLayout from "@/components/Layout/ResidentLayout";
 import {
   Table,
@@ -17,6 +17,7 @@ import api from "@/api/api";
 import jsPDF from "jspdf";
 import "./ResidentMaintenance.css";
 import { loadRazorpayScript } from "@/utils/razorpay";
+import SocietyLoader from "@/components/ui/SocietyLoader";
 
 export default function ResidentMaintenance() {
   const [bills, setBills] = useState([]);
@@ -52,7 +53,7 @@ export default function ResidentMaintenance() {
     if (!selectedBill) return;
 
     try {
-      // 1️⃣ Create Razorpay order via backend
+      // 1ï¸âƒ£ Create Razorpay order via backend
       setLoading(true);
       const { data } = await api.post("/maintenance/pay/create-order", {
         maintenanceId: selectedBill._id,
@@ -65,7 +66,7 @@ export default function ResidentMaintenance() {
         return;
       }
 
-      // 2️⃣ Razorpay options
+      // 2ï¸âƒ£ Razorpay options
       const options = {
         key: RAZORPAY_KEY_ID,
         amount: data.order.amount,
@@ -74,7 +75,7 @@ export default function ResidentMaintenance() {
         description: `Maintenance for ${selectedBill.month}`,
         order_id: data.order.id,
         handler: async function (response) {
-          // 3️⃣ Confirm payment in backend
+          // 3ï¸âƒ£ Confirm payment in backend
           await api.post(`/maintenance/pay/${selectedBill._id}`, {
             paymentMethod: "Razorpay",
             transactionId: response.razorpay_payment_id,
@@ -92,7 +93,7 @@ export default function ResidentMaintenance() {
         theme: { color: "#1677ff" },
       };
       setLoading(false);
-      // 4️⃣ Open Razorpay modal
+      // 4ï¸âƒ£ Open Razorpay modal
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
@@ -102,22 +103,115 @@ export default function ResidentMaintenance() {
   };
 
   const downloadReceipt = (bill) => {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Maintenance Payment Receipt", 20, 20);
-    doc.setFontSize(12);
-    doc.text(`Resident: ${bill.residentName || "Me"}`, 20, 40);
-    doc.text(`Month: ${bill.month}`, 20, 50);
-    doc.text(`Original Amount: ₹${bill.amount}`, 20, 60);
-    doc.text(`Late Fee: ₹${bill.lateFee || 0}`, 20, 70);
-    doc.text(`Total Paid: ₹${bill.finalAmount || bill.amount}`, 20, 80);
+    const doc = new jsPDF({ unit: "mm", format: "a4" });
+    const rupee = "Rs.";
+    const pageWidth = 210;
+    const marginX = 16;
+    const rightX = 140;
+
+    const formatMoney = (value) =>
+      `${rupee}${Number(value || 0).toLocaleString("en-IN")}`;
+
+      // Title
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(25);
+    doc.setTextColor(18, 76, 145);
+    doc.text("MAINTENANCE INVOICE", pageWidth / 2, 20, { align: "center" });
+    doc.setTextColor(0, 0, 0);
+
+    // Bill To
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(18, 76, 145);
+    doc.text("Bill To", marginX, 55);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(0, 0, 0);
+    const residentName =
+      bill.residentName ||
+      bill.residentId?.ownerName ||
+      bill.residentId?.name ||
+      "Resident";
+    const flatNo = bill.flatNo || bill.residentId?.flatNo || "-";
+    doc.text(`Name: ${residentName}`, marginX, 62);
+    doc.text(`Flat No: ${flatNo}`, marginX, 68);
+
+    // Invoice meta
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(18, 76, 145);
+    doc.text("Invoice #", rightX, 75, { align: "right" });
+    doc.text("Invoice date", rightX, 81, { align: "right" });
+    doc.text("Due date", rightX, 87, { align: "right" });
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(0, 0, 0);
+    doc.text(`${bill._id?.slice(-6) || "000007"}`, rightX + 30, 75, { align: "right" });
+    doc.text(dayjs().format("DD-MM-YYYY"), rightX + 30, 81, { align: "right" });
     doc.text(
-      `Paid At: ${bill.paidAt ? dayjs(bill.paidAt).format("DD MMM YYYY") : "-"}`,
-      20,
-      90
+      bill.dueDate ? dayjs(bill.dueDate).format("DD-MM-YYYY") : "-",
+      rightX + 30,
+      87,
+      { align: "right" }
     );
-    doc.text(`Payment Method: ${bill.paymentMethod || "-"}`, 20, 100);
-    doc.save(`Maintenance_${bill.month}.pdf`);
+
+    // Table header
+    const tableTop = 100;
+    doc.setFillColor(18, 76, 145);
+    doc.rect(marginX, tableTop, pageWidth - marginX * 2, 8, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(255, 255, 255);
+    doc.text("QTY", marginX + 6, tableTop + 5.5);
+    doc.text("Description", marginX + 20, tableTop + 5.5);
+    doc.text("Unit Price", 150, tableTop + 5.5, { align: "right" });
+    doc.text("Amount", 190, tableTop + 5.5, { align: "right" });
+    doc.setTextColor(0, 0, 0);
+
+    // Table row
+    const rowY = tableTop + 14;
+    doc.setFont("helvetica", "normal");
+    doc.text("1", marginX + 6, rowY);
+    doc.text(`Maintenance (${bill.month || "-"})`, marginX + 20, rowY);
+    const unitPrice = Number(bill.amount || 0);
+    doc.text(formatMoney(unitPrice), 150, rowY, { align: "right" });
+    doc.text(formatMoney(unitPrice), 190, rowY, { align: "right" });
+
+    // Totals
+    const totalsTop = rowY + 18;
+    doc.setDrawColor(18, 76, 145);
+    doc.line(120, totalsTop - 6, 190, totalsTop - 6);
+    doc.setFont("helvetica", "normal");
+    doc.text("Subtotal", 150, totalsTop, { align: "right" });
+    doc.text(formatMoney(unitPrice), 190, totalsTop, { align: "right" });
+    doc.text("Late Fee", 150, totalsTop + 6, { align: "right" });
+    doc.text(formatMoney(bill.lateFee || 0), 190, totalsTop + 6, { align: "right" });
+
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(18, 76, 145);
+    doc.text("Total (INR)", 150, totalsTop + 14, { align: "right" });
+    doc.text(formatMoney(bill.finalAmount || bill.amount), 190, totalsTop + 14, { align: "right" });
+    doc.setTextColor(0, 0, 0);
+
+    // Terms
+    const termsTop = totalsTop + 34;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(18, 76, 145);
+    doc.text("Terms and Conditions", marginX, termsTop);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Payment is due within 14 days.", marginX, termsTop + 6);
+    doc.text("Please make checks payable to: Your Company Inc.", marginX, termsTop + 12);
+
+    // Footer
+    doc.setDrawColor(220, 230, 245);
+    doc.line(marginX, 285, pageWidth - marginX, 285);
+    doc.setFontSize(9);
+    doc.text(
+      `Paid At: ${bill.paidAt ? dayjs(bill.paidAt).format("DD MMM YYYY") : "-"} | Method: ${bill.paymentMethod || "-"}`,
+      marginX,
+      291
+    );
+
+    doc.save(`Maintenance_${bill.month || "receipt"}.pdf`);
   };
 
   const columns = [
@@ -194,7 +288,8 @@ export default function ResidentMaintenance() {
 
   return (
     <ResidentLayout>
-      <h2 style={{ marginBottom: 20 }}>My Maintenance Bills</h2>
+      <SocietyLoader spinning={loading} fullScreen>
+        <h2 style={{ marginBottom: 20 }}>My Maintenance Bills</h2>
 
       <Row gutter={16} style={{ marginBottom: 20 }}>
         <Col span={6}>
@@ -227,23 +322,26 @@ export default function ResidentMaintenance() {
       />
 
       {/* Payment Modal */}
-      <Modal
-        open={open}
-        title={`Pay ₹ ${selectedBill?.finalAmount || selectedBill?.amount}`}
-        onCancel={() => setOpen(false)}
-        onOk={handlePayment}
-        okText="Pay Now"
-      >
-        <Radio.Group onChange={(e) => setPaymentMethod(e.target.value)} value={paymentMethod}>
-          <Space direction="vertical">
-            <Radio value="UPI">UPI</Radio>
-            <Radio value="Credit Card">Credit Card</Radio>
-            <Radio value="Debit Card">Debit Card</Radio>
-            <Radio value="Razorpay">Razorpay</Radio>
-            <Radio value="Paytm">Paytm</Radio>
-          </Space>
-        </Radio.Group>
-      </Modal>
+        <Modal
+          open={open}
+          title={`Pay ₹ ${selectedBill?.finalAmount || selectedBill?.amount}`}
+          onCancel={() => setOpen(false)}
+          onOk={handlePayment}
+          okText="Pay Now"
+        >
+          <Radio.Group onChange={(e) => setPaymentMethod(e.target.value)} value={paymentMethod}>
+            <Space direction="vertical">
+              <Radio value="UPI">UPI</Radio>
+              <Radio value="Credit Card">Credit Card</Radio>
+              <Radio value="Debit Card">Debit Card</Radio>
+              <Radio value="Razorpay">Razorpay</Radio>
+              <Radio value="Paytm">Paytm</Radio>
+            </Space>
+          </Radio.Group>
+        </Modal>
+      </SocietyLoader>
     </ResidentLayout>
   );
 }
+
+

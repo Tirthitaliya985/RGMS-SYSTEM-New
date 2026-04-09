@@ -12,7 +12,6 @@ import {
   Tag,
   List,
   Empty,
-  Spin,
   Progress,
   Divider,
 } from "antd";
@@ -39,6 +38,7 @@ import {
 } from "recharts";
 import { useTheme } from "../../context/ThemeContext";
 import api from "../../api/api";
+import SocietyLoader from "@/components/ui/SocietyLoader";
 
 const normalizeList = (payload) =>
   Array.isArray(payload)
@@ -300,8 +300,8 @@ export default function SocietyAdminDashboard() {
           </Row>
         </Card>
 
-        <Spin spinning={loading}>
-          <div style={{  width: "100%", overflowX: "hidden" }}>
+        <SocietyLoader spinning={loading} fullScreen>
+          <div style={{ width: "100%", overflowX: "hidden" }}>
           <Row gutter={sectionGutter}>
             <Col xs={24} sm={12} lg={6} style={colStyle}>
               <Card style={statCardStyle} styles={{ body: cardBodyStyle }}>
@@ -601,7 +601,7 @@ export default function SocietyAdminDashboard() {
             </Col>
           </Row>
           </div>
-        </Spin>
+        </SocietyLoader>
       </Space>
     </SocietyLayout>
   );
