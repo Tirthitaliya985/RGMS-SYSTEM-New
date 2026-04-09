@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { message, Spin } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wallet, Calendar, Home, CheckCircle, ArrowUpRight, ReceiptText } from "lucide-react";
@@ -7,8 +7,9 @@ import { getMyBills, createRazorpayOrder, verifyPayment } from "@/api/residentBi
 import CountUp from "react-countup";
 import confetti from "canvas-confetti";
 import { loadRazorpayScript } from "@/utils/razorpay";
+import { useTheme } from "@/context/ThemeContext";
 
-const styles = {
+const baseStyles = {
   page: {
     width: "100%",
     minHeight: "100%",
@@ -209,7 +210,57 @@ const styles = {
   },
 };
 
+const darkOverrides = {
+  page: {
+    background: "rgba(2, 6, 23, 0.6)",
+  },
+  headerWrap: {
+    background: "#0f172a",
+    borderBottom: "1px solid rgba(148, 163, 184, 0.22)",
+  },
+  title: { color: "#e2e8f0" },
+  subtitle: { color: "#94a3b8" },
+  statCard: {
+    background: "linear-gradient(135deg, #1d4ed8, #4f46e5)",
+    boxShadow: "0 10px 25px rgba(59, 130, 246, 0.25)",
+  },
+  emptyCard: {
+    background: "#0f172a",
+    border: "1px dashed rgba(148, 163, 184, 0.3)",
+  },
+  emptyTitle: { color: "#e2e8f0" },
+  emptyText: { color: "#94a3b8" },
+  billCard: {
+    background: "#0f172a",
+    border: "1px solid rgba(148, 163, 184, 0.22)",
+  },
+  billTitle: { color: "#e2e8f0" },
+  amountSymbol: { color: "#e2e8f0" },
+  amountValue: { color: "#e2e8f0" },
+  infoWrap: { borderTop: "1px solid rgba(148, 163, 184, 0.22)" },
+  infoLeft: { color: "#94a3b8" },
+  infoRight: { color: "#e2e8f0" },
+  paidBox: {
+    background: "rgba(148, 163, 184, 0.12)",
+    border: "1px solid rgba(148, 163, 184, 0.22)",
+    color: "#cbd5e1",
+  },
+  payBtn: {
+    background: "linear-gradient(135deg, #2563eb, #4f46e5)",
+    boxShadow: "0 10px 18px rgba(37, 99, 235, 0.28)",
+  },
+};
+
+const mergeStyles = (base, overrides) =>
+  Object.keys(base).reduce((acc, key) => {
+    acc[key] = { ...base[key], ...(overrides[key] || {}) };
+    return acc;
+  }, {});
+
 export default function ResidentBills() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const styles = useMemo(() => (isDark ? mergeStyles(baseStyles, darkOverrides) : baseStyles), [isDark]);
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [payingBillId, setPayingBillId] = useState(null);
@@ -344,6 +395,8 @@ export default function ResidentBills() {
                       index={index}
                       onPay={handlePayment}
                       isPaying={payingBillId === bill._id}
+                      isDark={isDark}
+                      styles={styles}
                     />
                   ))}
                 </AnimatePresence>
@@ -356,12 +409,12 @@ export default function ResidentBills() {
   );
 }
 
-function BillCard({ bill, index, onPay, isPaying }) {
+function BillCard({ bill, index, onPay, isPaying, isDark, styles }) {
   const isPaid = bill.status === "Paid";
 
   const statusStyle = isPaid
-    ? { ...styles.statusBase, background: "#dcfce7", color: "#047857" }
-    : { ...styles.statusBase, background: "#ffedd5", color: "#c2410c" };
+    ? { ...styles.statusBase, background: isDark ? "rgba(16, 185, 129, 0.2)" : "#dcfce7", color: isDark ? "#34d399" : "#047857" }
+    : { ...styles.statusBase, background: isDark ? "rgba(249, 115, 22, 0.2)" : "#ffedd5", color: isDark ? "#fb923c" : "#c2410c" };
 
   const dotStyle = {
     width: 8,

@@ -261,6 +261,9 @@ export const getWingMaintenance = async (req, res) => {
 export const getResidentMaintenance = async (req, res) => {
   try {
     const residentId = req.user.id;
+    const resident = await Resident.findById(residentId)
+      .select("ownerName flatNo")
+      .lean();
 
     const maintenance = await Maintenance.find(
       { "residentBills.resident": residentId },
@@ -281,6 +284,8 @@ export const getResidentMaintenance = async (req, res) => {
       isPaid: m.residentBills[0]?.isPaid,
       paidAt: m.residentBills[0]?.paidAt,
       paymentMethod: m.residentBills[0]?.paymentMethod,
+      residentName: resident?.ownerName,
+      flatNo: resident?.flatNo,
     }));
 
     res.json({ success: true, data: bills });
