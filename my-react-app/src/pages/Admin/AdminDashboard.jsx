@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import AdminLayout from "@/components/Layout/AdminLayout";
-import { Card, Row, Col, Statistic, Table, message, Spin } from "antd";
+import { Card, Row, Col, Statistic, Table, message } from "antd";
 import { useTheme } from "@/context/ThemeContext";
 import api from "@/api/api";
 import { io } from "socket.io-client";
+import SocietyLoader from "@/components/ui/SocietyLoader";
 // import "./Dashboard.css"; // add animation styles
 
 export default function Dashboard() {
@@ -118,7 +119,7 @@ export default function Dashboard() {
               className={displayStats[key] < stats[key] ? "pulse-card" : ""}
             >
               {loadingStats ? (
-                <Spin />
+                <SocietyLoader inline size="xs" showText={false} />
               ) : (
                 <Statistic title={title} value={displayStats[key]} valueStyle={{ color }} />
               )}
@@ -129,7 +130,7 @@ export default function Dashboard() {
 
       <Card title="Recent Activities" style={{ marginTop: 30, ...cardStyle }}>
         {loadingActivities ? (
-          <Spin />
+          <SocietyLoader inline size="xs" showText={false} />
         ) : (
           <Table
             dataSource={recentActivities.map((a) => ({

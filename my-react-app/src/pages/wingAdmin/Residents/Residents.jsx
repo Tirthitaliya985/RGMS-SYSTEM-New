@@ -194,12 +194,15 @@ export default function Residents() {
   // ================= UI =================
   return (
     <WingLayout>
-      <div style={{ background: "#f5f7fa", minHeight: "100vh", padding: 24 }}>
+      <div
+        className="wing-residents-page"
+        style={{ background: "var(--wing-residents-page-bg)", minHeight: "100vh", padding: 24 }}
+      >
         
         {/* Gradient Header */}
         <div
           style={{
-            background: "linear-gradient(135deg, #1677ff, #69b1ff)",
+            background: "var(--wing-residents-hero-bg)",
             padding: 30,
             borderRadius: 20,
             color: "#fff",
@@ -239,7 +242,7 @@ export default function Residents() {
           rowKey="_id"
           pagination={{ pageSize: 6 }}
           style={{
-            background: "#fff",
+            background: "var(--wing-residents-table-bg)",
             borderRadius: 16,
             padding: 16,
           }}

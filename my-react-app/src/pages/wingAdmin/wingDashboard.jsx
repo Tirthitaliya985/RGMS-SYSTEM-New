@@ -8,7 +8,6 @@ import {
   Progress,
   Typography,
   Tag,
-  Spin,
 } from "antd";
 import {
   TeamOutlined,
@@ -19,6 +18,7 @@ import {
 import api from "@/api/api";
 import ResidentDashboard from "../User/ResidentDashboard";
 import WingLayout from "@/components/Layout/WingLayout";
+import SocietyLoader from "@/components/ui/SocietyLoader";
 const { Title } = Typography;
 
 export default function WingDashboard() {
@@ -44,7 +44,7 @@ export default function WingDashboard() {
     }
   };
 
-  if (loading) return <Spin size="large" />;
+  if (loading) return <SocietyLoader fullScreen />;
 
   const complaintColumns = [
     {

@@ -5,7 +5,6 @@ import {
   Col,
   Row,
   Space,
-  Spin,
   Statistic,
   Table,
   Tag,
@@ -22,6 +21,7 @@ import {
 import dayjs from "dayjs";
 import ResidentLayout from "@/components/Layout/ResidentLayout";
 import api from "@/api/api";
+import SocietyLoader from "@/components/ui/SocietyLoader";
 
 const visitorStatusColor = {
   pending: "orange",
@@ -145,27 +145,20 @@ export default function ResidentDashboard() {
 
   return (
     <ResidentLayout>
-      <Space direction="vertical" size={16} style={{ width: "100%" }}>
-        <Space style={{ width: "100%", justifyContent: "space-between" }}>
-          <div>
-            <Typography.Title level={3} style={{ margin: 0 }}>
-              Resident Dashboard
-            </Typography.Title>
-            <Typography.Text type="secondary">
-              Overview of gate activity, dues, parcels, and complaints.
-            </Typography.Text>
-          </div>
-          <Button onClick={loadDashboard}>Refresh</Button>
-        </Space>
-
-        {loading ? (
-          <Card>
-            <div style={{ display: "grid", placeItems: "center", padding: 40 }}>
-              <Spin />
+      <SocietyLoader spinning={loading} fullScreen>
+        <Space direction="vertical" size={16} style={{ width: "100%" }}>
+          <Space style={{ width: "100%", justifyContent: "space-between" }}>
+            <div>
+              <Typography.Title level={3} style={{ margin: 0 }}>
+                Resident Dashboard
+              </Typography.Title>
+              <Typography.Text type="secondary">
+                Overview of gate activity, dues, parcels, and complaints.
+              </Typography.Text>
             </div>
-          </Card>
-        ) : (
-          <>
+            <Button onClick={loadDashboard}>Refresh</Button>
+          </Space>
+
             <Row gutter={[16, 16]}>
               <Col xs={24} md={8} lg={4}>
                 <Card>
@@ -231,9 +224,8 @@ export default function ResidentDashboard() {
                 </Card>
               </Col>
             </Row>
-          </>
-        )}
-      </Space>
+        </Space>
+      </SocietyLoader>
     </ResidentLayout>
   );
 }
