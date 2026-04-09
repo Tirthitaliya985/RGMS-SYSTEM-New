@@ -219,7 +219,7 @@ export default function SocietyAdminDashboard() {
   }, [events]);
 
   const cardStyle = {
-    background: isDark ? "#1f2940" : "#ffffff",
+    backgroundColor: isDark ? "#1f2940" : "#ffffff",
     color: isDark ? "#fff" : "#000",
     border: `1px solid ${isDark ? "#2f436d" : "#edf2f7"}`,
     borderRadius: 14,
@@ -234,16 +234,16 @@ export default function SocietyAdminDashboard() {
 
   const headerCardStyle = {
     ...cardStyle,
-    background: isDark
-      ? "linear-gradient(120deg, #1f2940 0%, #22375c 100%)"
-      : "linear-gradient(120deg, #ffffff 0%, #eef6ff 100%)",
+    backgroundColor: "transparent",
+    "--ui-card-grad-light": "linear-gradient(120deg, #ffffff 0%, #eef6ff 100%)",
+    "--ui-card-grad-dark": "linear-gradient(120deg, #1f2940 0%, #22375c 100%)",
   };
 
   const insightCardStyle = {
     ...cardStyle,
-    background: isDark
-      ? "linear-gradient(140deg, #1a2844 0%, #1f395d 100%)"
-      : "linear-gradient(140deg, #f8fbff 0%, #eef5ff 100%)",
+    backgroundColor: "transparent",
+    "--ui-card-grad-light": "linear-gradient(140deg, #f8fbff 0%, #eef5ff 100%)",
+    "--ui-card-grad-dark": "linear-gradient(140deg, #1a2844 0%, #1f395d 100%)",
   };
 
   const getComplaintTagColor = (status) => {
@@ -266,7 +266,7 @@ export default function SocietyAdminDashboard() {
   return (
     <SocietyLayout>
       <Space direction="vertical" size={20} style={{ width: "100%" }}>
-        <Card style={headerCardStyle} styles={{ body: { padding: "22px 24px" } }}>
+        <Card className="ui-gradient-card" style={headerCardStyle} styles={{ body: { padding: "22px 24px" } }}>
           <Row justify="space-between" align="middle" gutter={[12, 12]}>
             <Col>
               <Title
@@ -357,7 +357,7 @@ export default function SocietyAdminDashboard() {
 
           <Row gutter={sectionGutter} style={{ marginTop: 8 }}>
             <Col xs={24} lg={8} style={colStyle}>
-              <Card style={insightCardStyle} styles={{ body: cardBodyStyle }}>
+              <Card className="ui-gradient-card" style={insightCardStyle} styles={{ body: cardBodyStyle }}>
                 <Text strong style={{ color: isDark ? "#dbeafe" : "#1e3a8a" }}>
                   Collection Efficiency
                 </Text>
@@ -379,7 +379,7 @@ export default function SocietyAdminDashboard() {
             </Col>
 
             <Col xs={24} lg={8} style={colStyle}>
-              <Card style={insightCardStyle} styles={{ body: cardBodyStyle }}>
+              <Card className="ui-gradient-card" style={insightCardStyle} styles={{ body: cardBodyStyle }}>
                 <Text strong style={{ color: isDark ? "#dbeafe" : "#1e3a8a" }}>
                   Complaint Resolution
                 </Text>
@@ -401,7 +401,7 @@ export default function SocietyAdminDashboard() {
             </Col>
 
             <Col xs={24} lg={8} style={colStyle}>
-              <Card style={insightCardStyle} styles={{ body: cardBodyStyle }}>
+              <Card className="ui-gradient-card" style={insightCardStyle} styles={{ body: cardBodyStyle }}>
                 <Text strong style={{ color: isDark ? "#dbeafe" : "#1e3a8a" }}>
                   Event Engagement
                 </Text>
@@ -448,7 +448,7 @@ export default function SocietyAdminDashboard() {
                       <Legend />
                       <Tooltip
                         contentStyle={{
-                          background: isDark ? "#13233e" : "#ffffff",
+                          backgroundColor: isDark ? "#13233e" : "#ffffff",
                           border: `1px solid ${isDark ? "#2f436d" : "#e2e8f0"}`,
                           borderRadius: 10,
                         }}
@@ -475,7 +475,7 @@ export default function SocietyAdminDashboard() {
                       <Tooltip
                         formatter={(value) => formatCurrency(value)}
                         contentStyle={{
-                          background: isDark ? "#13233e" : "#ffffff",
+                          backgroundColor: isDark ? "#13233e" : "#ffffff",
                           border: `1px solid ${isDark ? "#2f436d" : "#e2e8f0"}`,
                           borderRadius: 10,
                         }}
@@ -515,7 +515,7 @@ export default function SocietyAdminDashboard() {
                       <YAxis tick={{ fill: isDark ? "#cbd5e1" : "#334155" }} />
                       <Tooltip
                         contentStyle={{
-                          background: isDark ? "#13233e" : "#ffffff",
+                          backgroundColor: isDark ? "#13233e" : "#ffffff",
                           border: `1px solid ${isDark ? "#2f436d" : "#e2e8f0"}`,
                           borderRadius: 10,
                         }}

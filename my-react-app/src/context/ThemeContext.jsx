@@ -1,20 +1,44 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useLayoutEffect, useRef, useState } from "react";
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState("dark"); // "light" | "dark"
+  const [theme, setTheme] = useState(() => {
+    try {
+      const savedTheme = localStorage.getItem("theme");
+      return savedTheme || "dark";
+    } catch {
+      return "dark";
+    }
+  }); // "light" | "dark"
+  const hasMountedRef = useRef(false);
 
-  // Load theme from localStorage
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) setTheme(savedTheme);
-  }, []);
+  // Apply theme before paint (prevents visible "delay"/flash) + animate only on toggles
+  useLayoutEffect(() => {
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {
+      // ignore
+    }
 
-  // Save theme changes
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
+    if (!hasMountedRef.current) {
+      document.body.setAttribute("data-theme", theme);
+      hasMountedRef.current = true;
+      return;
+    }
+
+    document.body.classList.add("theme-transition");
+    // Ensure transitions are applied before switching theme variables.
+    // (Otherwise some components change instantly and others animate.)
+    // eslint-disable-next-line no-unused-expressions
+    document.body.offsetHeight;
+
     document.body.setAttribute("data-theme", theme);
+    const timeoutId = setTimeout(() => {
+      document.body.classList.remove("theme-transition");
+    }, 650);
+
+    return () => clearTimeout(timeoutId);
   }, [theme]);
 
   const toggleTheme = () => {

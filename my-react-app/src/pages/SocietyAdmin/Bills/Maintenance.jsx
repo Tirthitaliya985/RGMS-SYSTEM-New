@@ -223,7 +223,7 @@ export default function Maintenance() {
   ];
 
   return (
-    <SocietyLayout>
+    <>
       <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
@@ -319,6 +319,6 @@ export default function Maintenance() {
           </div>
         </Modal>
       </div>
-    </SocietyLayout>
+    </>
   );
 }

@@ -17,8 +17,7 @@ import {
 } from "@ant-design/icons";
 import SocietyAdminDashboard from "@/pages/SocietyAdmin/SocietyAdminDashboard";
 import Residents from "@/pages/SocietyAdmin/residents/Residents";
-import Bills from "@/pages/SocietyAdmin/Bills/bills";
-import Maintenance from "@/pages/SocietyAdmin/Bills/Maintenance";
+import BillsAndMaintenance from "@/pages/SocietyAdmin/Bills/Bills&Maintenance";
 import Payments from "@/pages/SocietyAdmin/Payments/Payments";
 import SocietyComplaints from "@/pages/SocietyAdmin/Complaints/Complaints";
 import CreateComplaint from "@/pages/SocietyAdmin/Complaints/CreateComplaint";
@@ -60,18 +59,10 @@ export const societyRoutes = [
   {
     path: "/society/bills",
     name: "Bills",
-    component: Bills,
+    component: BillsAndMaintenance,
     protected: true,
     allowedRoles: ["society", "society admin"],
     icon: <DollarOutlined />,
-  },
-  {
-    path: "/society/maintenance",
-    name: "Maintenance",
-    component: Maintenance,
-    protected: true,
-    allowedRoles: ["society", "society admin"],
-    icon: <ApartmentOutlined />,
   },
   {
     path: "/society/payments",

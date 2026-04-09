@@ -216,7 +216,7 @@ export default function Bills() {
   };
 
   return (
-    <SocietyLayout>
+    <>
       <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-6 overflow-hidden">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 gap-4">
@@ -544,6 +544,6 @@ export default function Bills() {
           </div>
         </Modal>
       </div>
-    </SocietyLayout>
+    </>
   );
 }
