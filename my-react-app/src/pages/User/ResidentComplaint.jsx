@@ -9,10 +9,10 @@ import {
   Table,
   Tag,
   message,
-  Spin,
 } from "antd";
 import api from "@/api/api";
 import ResidentLayout from "@/components/Layout/ResidentLayout";
+import SocietyLoader from "@/components/ui/SocietyLoader";
 
 const { TextArea } = Input;
 
@@ -84,7 +84,7 @@ export default function ResidentComplaint() {
     },
   ];
 
-  if (loading) return <Spin size="large" />;
+  if (loading) return <SocietyLoader fullScreen />;
 
   return (
     <ResidentLayout>

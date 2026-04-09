@@ -57,10 +57,11 @@ export default function WingProfile() {
   return (
     <WingLayout>
       <div
+        className="wing-profile-page"
         style={{
           minHeight: "100vh",
           padding: 30,
-          background: "linear-gradient(120deg, #f6f9fc, #eef2f7)",
+          background: "var(--wing-profile-page-bg)",
         }}
       >
         {/* Animated Gradient Header */}
@@ -69,7 +70,7 @@ export default function WingProfile() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           style={{
-            background: "linear-gradient(135deg, #1677ff, #722ed1)",
+            background: "var(--wing-profile-hero-bg)",
             padding: 40,
             borderRadius: 24,
             color: "#fff",
@@ -93,16 +94,16 @@ export default function WingProfile() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Card
-                style={{
-                  borderRadius: 24,
-                  textAlign: "center",
-                  backdropFilter: "blur(20px)",
-                  background: "rgba(255,255,255,0.7)",
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.05)",
-                  border: "1px solid rgba(255,255,255,0.3)",
-                }}
-              >
+                <Card
+                  style={{
+                    borderRadius: 24,
+                    textAlign: "center",
+                    backdropFilter: "blur(20px)",
+                    background: "var(--wing-profile-card-bg)",
+                    boxShadow: "0 20px 40px rgba(0,0,0,0.05)",
+                    border: "1px solid var(--wing-profile-card-border)",
+                  }}
+                >
                 <motion.div whileHover={{ scale: 1.1 }}>
                   <Avatar
                     size={110}
@@ -119,7 +120,7 @@ export default function WingProfile() {
                 </motion.div>
 
                 <h2 style={{ marginBottom: 4 }}>{profile?.wingName}</h2>
-                <p style={{ color: "#777" }}>{profile?.email}</p>
+                <p style={{ color: "var(--wing-profile-muted-text)" }}>{profile?.email}</p>
 
                 <Divider />
 

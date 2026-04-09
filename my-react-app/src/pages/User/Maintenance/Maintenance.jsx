@@ -17,6 +17,7 @@ import api from "@/api/api";
 import jsPDF from "jspdf";
 import "./ResidentMaintenance.css";
 import { loadRazorpayScript } from "@/utils/razorpay";
+import SocietyLoader from "@/components/ui/SocietyLoader";
 
 export default function ResidentMaintenance() {
   const [bills, setBills] = useState([]);
@@ -287,7 +288,8 @@ export default function ResidentMaintenance() {
 
   return (
     <ResidentLayout>
-      <h2 style={{ marginBottom: 20 }}>My Maintenance Bills</h2>
+      <SocietyLoader spinning={loading} fullScreen>
+        <h2 style={{ marginBottom: 20 }}>My Maintenance Bills</h2>
 
       <Row gutter={16} style={{ marginBottom: 20 }}>
         <Col span={6}>
@@ -320,23 +322,24 @@ export default function ResidentMaintenance() {
       />
 
       {/* Payment Modal */}
-      <Modal
-        open={open}
-        title={`Pay ₹ ${selectedBill?.finalAmount || selectedBill?.amount}`}
-        onCancel={() => setOpen(false)}
-        onOk={handlePayment}
-        okText="Pay Now"
-      >
-        <Radio.Group onChange={(e) => setPaymentMethod(e.target.value)} value={paymentMethod}>
-          <Space direction="vertical">
-            <Radio value="UPI">UPI</Radio>
-            <Radio value="Credit Card">Credit Card</Radio>
-            <Radio value="Debit Card">Debit Card</Radio>
-            <Radio value="Razorpay">Razorpay</Radio>
-            <Radio value="Paytm">Paytm</Radio>
-          </Space>
-        </Radio.Group>
-      </Modal>
+        <Modal
+          open={open}
+          title={`Pay ₹ ${selectedBill?.finalAmount || selectedBill?.amount}`}
+          onCancel={() => setOpen(false)}
+          onOk={handlePayment}
+          okText="Pay Now"
+        >
+          <Radio.Group onChange={(e) => setPaymentMethod(e.target.value)} value={paymentMethod}>
+            <Space direction="vertical">
+              <Radio value="UPI">UPI</Radio>
+              <Radio value="Credit Card">Credit Card</Radio>
+              <Radio value="Debit Card">Debit Card</Radio>
+              <Radio value="Razorpay">Razorpay</Radio>
+              <Radio value="Paytm">Paytm</Radio>
+            </Space>
+          </Radio.Group>
+        </Modal>
+      </SocietyLoader>
     </ResidentLayout>
   );
 }

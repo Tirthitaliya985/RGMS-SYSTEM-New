@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { message, Spin } from "antd";
+import { message } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wallet, Calendar, Home, CheckCircle, ArrowUpRight, ReceiptText } from "lucide-react";
 import ResidentLayout from "@/components/Layout/ResidentLayout";
@@ -8,6 +8,7 @@ import CountUp from "react-countup";
 import confetti from "canvas-confetti";
 import { loadRazorpayScript } from "@/utils/razorpay";
 import { useTheme } from "@/context/ThemeContext";
+import SocietyLoader from "@/components/ui/SocietyLoader";
 
 const baseStyles = {
   page: {
@@ -368,8 +369,7 @@ export default function ResidentBills() {
           <main style={styles.main}>
             {loading ? (
               <div style={styles.loadingWrap}>
-                <Spin size="large" />
-                <p style={styles.loadingText}>Loading your financial records...</p>
+                <SocietyLoader inline size="sm" text="Loading Society..." />
               </div>
             ) : bills.length === 0 ? (
               <motion.div
@@ -479,7 +479,7 @@ function BillCard({ bill, index, onPay, isPaying, isDark, styles }) {
         ) : (
           <button onClick={() => onPay(bill)} disabled={isPaying} style={payBtnStyle}>
             {isPaying ? (
-              <Spin size="small" />
+              <SocietyLoader inline size="xs" showText={false} />
             ) : (
               <>
                 Pay Now <ArrowUpRight size={16} />
