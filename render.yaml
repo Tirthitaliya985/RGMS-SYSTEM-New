@@ -3,7 +3,7 @@ services:
     name: rgms-backend
     runtime: node
     rootDir: server
-    buildCommand: npm install && npx puppeteer browsers install chrome
+    buildCommand: PUPPETEER_CACHE_DIR=/opt/render/project/src/server/.cache/puppeteer npm install && PUPPETEER_CACHE_DIR=/opt/render/project/src/server/.cache/puppeteer npx puppeteer browsers install chrome
     startCommand: npm start
     autoDeploy: true
     healthCheckPath: /api/dashboard
