@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Alert, Button, Card, Input, Select, Space, Table, Tag, Typography, message } from "antd";
 import dayjs from "dayjs";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 import GuardLayout from "@/components/Layout/GuardLayout";
 import api from "@/api/api";
 
@@ -33,7 +34,7 @@ export default function EmergencyAlert() {
   }, [fetchAlerts]);
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    const socket = io(SOCKET_URL);
     const societyId = localStorage.getItem("societyId");
     if (societyId) {
       socket.emit("joinSociety", societyId);

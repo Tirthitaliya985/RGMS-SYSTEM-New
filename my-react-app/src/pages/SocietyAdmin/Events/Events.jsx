@@ -21,6 +21,7 @@ import {
   Popconfirm,
 } from "antd";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 import dayjs from "dayjs";
 import api from "@/api/api";
 import { useAuth } from "@/context/AuthContext";
@@ -64,7 +65,7 @@ export default function Events() {
 
   // Initialize Socket.IO
   useEffect(() => {
-    const socketClient = io("http://localhost:5000"); // your backend URL
+    const socketClient = io(SOCKET_URL); // your backend URL
     setSocket(socketClient);
 
     // Listen for live updates

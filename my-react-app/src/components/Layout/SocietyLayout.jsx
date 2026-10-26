@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 import { Layout, Menu, Switch, Avatar, Dropdown, Badge, Drawer, Breadcrumb, List, Typography, message } from "antd";
 import { BellOutlined, LogoutOutlined, UserOutlined, MoonOutlined, SunOutlined, MenuOutlined } from "@ant-design/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -21,7 +22,7 @@ export default function SocietyLayout({ children }) {
   const isDark = theme === "dark";
   const navigate = useNavigate();
   const location = useLocation();
-  const socket = io("http://localhost:5000");
+  const socket = io(SOCKET_URL);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 992);

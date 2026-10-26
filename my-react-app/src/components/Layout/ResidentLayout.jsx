@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Layout, Menu, Switch, Avatar, Dropdown, Badge, Drawer, Breadcrumb, List, Typography, message, Empty } from "antd";
 import { BellOutlined, LogoutOutlined, UserOutlined, MoonOutlined, SunOutlined, MenuOutlined } from "@ant-design/icons";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -30,7 +31,7 @@ export default function ResidentLayout({ children }) {
   }, []);
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:5000");
+    socketRef.current = io(SOCKET_URL);
     const wingId = localStorage.getItem("wingId");
 
     socketRef.current.emit("joinWing", wingId);

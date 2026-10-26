@@ -18,6 +18,7 @@ import {
 import dayjs from "dayjs";
 import { QRCodeCanvas } from "qrcode.react";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 import ResidentLayout from "@/components/Layout/ResidentLayout";
 import api from "@/api/api";
 
@@ -75,7 +76,7 @@ export default function VisitorsPage() {
   }, []);
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    const socket = io(SOCKET_URL);
     const societyId = localStorage.getItem("societyId");
     if (societyId) {
       socket.emit("joinSociety", societyId);

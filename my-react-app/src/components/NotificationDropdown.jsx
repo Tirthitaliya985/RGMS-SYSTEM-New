@@ -2,6 +2,7 @@ import { List, Typography, Empty, Badge } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 import api from "@/api/api";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +22,7 @@ export default function NotificationDropdown() {
   useEffect(() => {
     fetchNotifications();
 
-    const socket = io("http://localhost:5000", {
+    const socket = io(SOCKET_URL, {
       transports: ["websocket"],
     });
 

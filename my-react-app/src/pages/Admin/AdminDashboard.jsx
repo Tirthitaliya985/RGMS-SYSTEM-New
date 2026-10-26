@@ -3,6 +3,7 @@ import AdminLayout from "@/components/Layout/AdminLayout";
 import { Card, Row, Col, Statistic, Table, message } from "antd";
 import { useTheme } from "@/context/ThemeContext";
 import api from "@/api/api";
+import { SOCKET_URL } from "@/api/backendConfig";
 import { io } from "socket.io-client";
 import SocietyLoader from "@/components/ui/SocietyLoader";
 // import "./Dashboard.css"; // add animation styles
@@ -82,7 +83,7 @@ export default function Dashboard() {
     fetchStats();
     fetchActivities();
 
-    const socket = io(api.baseURL);
+    const socket = io(SOCKET_URL);
     socket.on("new-activity", (activity) => {
       setRecentActivities((prev) => {
         const updated = [activity, ...prev].slice(0, 5);

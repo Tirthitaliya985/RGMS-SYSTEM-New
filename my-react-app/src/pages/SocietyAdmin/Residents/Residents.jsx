@@ -14,9 +14,10 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import SocietyLayout from "../../../components/Layout/SocietyLayout";
 import api from "../../../api/api";
 import io from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 
 const { Option } = Select;
-const socket = io("http://localhost:5000");
+const socket = io(SOCKET_URL);
 
 export default function Residents() {
   const [residents, setResidents] = useState([]);

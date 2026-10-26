@@ -19,9 +19,10 @@ import {
 import { UploadOutlined, PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import api from "@/api/api";
 import io from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 
 const { Option } = Select;
-const socket = io("http://localhost:5000"); // your socket server
+const socket = io(SOCKET_URL); // your socket server
 
 export default function Staff() {
   const [staff, setStaff] = useState([]);

@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import api from "@/api/api";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 
 export const NotificationContext = createContext();
 
@@ -18,7 +19,7 @@ export const NotificationProvider = ({ children }) => {
     };
     fetch();
 
-    const socket = io("http://localhost:5000");
+    const socket = io(SOCKET_URL);
     socket.emit("joinSociety", localStorage.getItem("societyId"));
 
     socket.on("newNotification", (n) => {

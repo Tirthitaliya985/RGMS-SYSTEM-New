@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import io from "socket.io-client";
+import { SOCKET_URL } from "@/api/backendConfig";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -29,7 +30,7 @@ export default function Attendance() {
     fetchStaff();
     fetchAttendance();
 
-    const s = io("http://localhost:5000");
+    const s = io(SOCKET_URL);
     s.on("attendanceUpdated", fetchAttendance);
     setSocket(s);
 
