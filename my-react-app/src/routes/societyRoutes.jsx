@@ -16,7 +16,7 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 import SocietyAdminDashboard from "@/pages/SocietyAdmin/SocietyAdminDashboard";
-import Residents from "@/pages/SocietyAdmin/residents/Residents";
+import Residents from "@/pages/SocietyAdmin/Residents/Residents.jsx";
 import BillsAndMaintenance from "@/pages/SocietyAdmin/Bills/Bills&Maintenance";
 import Payments from "@/pages/SocietyAdmin/Payments/Payments";
 import SocietyComplaints from "@/pages/SocietyAdmin/Complaints/Complaints";
