@@ -1,5 +1,5 @@
 import express from "express";
-import Shift from "../models/shift.js";
+import Shift from "../models/Shift.js";
 
 const router = express.Router();
 
