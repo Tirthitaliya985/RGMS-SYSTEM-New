@@ -47,7 +47,6 @@ const userSchema = new mongoose.Schema(
     },
     demoExpiresAt: {
       type: Date,
-      index: true,
     },
   },
   {
